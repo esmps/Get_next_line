@@ -6,13 +6,13 @@
 /*   By: epines-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:12:39 by epines-s          #+#    #+#             */
-/*   Updated: 2020/02/26 19:28:43 by epines-s         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:43:00 by epines-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char		*new_line(char *storage_fd)
+static char		*line_to_read(char *storage_fd)
 {
 	char	*newline;
 	int		i;
@@ -20,6 +20,8 @@ static char		*new_line(char *storage_fd)
 	i = 0;
 	while (storage_fd[i] != '\0' && storage_fd[i] != '\n')
 		i++;
+	if (i == 0)
+		return (NULL);
 	newline = ft_strsub(storage_fd, 0, i);
 	newline[i] = '\0';
 	return (newline);
@@ -33,7 +35,9 @@ static char		*store_this(char *storage_fd)
 	i = 0;
 	while (storage_fd[i] != '\0' && storage_fd[i] != '\n')
 		i++;
-	res = &storage_fd[i + 1];
+	if (i == 0)
+		return (NULL);
+	res = ft_strsub(storage_fd, (i + 1), (ft_strlen(storage_fd)));
 	return (res);
 }
 
@@ -53,13 +57,13 @@ int				get_next_line(const int fd, char **line)
 		buf[readres] = '\0';
 		temp = ft_strjoin(storage[fd], buf);
 		free(storage[fd]);
-		storage[fd] = temp;
+		storage[fd] = temp;	
 		if (ft_strchr(storage[fd], '\n'))
 			break ;
 	}
-	*line = new_line(storage[fd]);
+	*line = line_to_read(storage[fd]);
 	storage[fd] = store_this(storage[fd]);
-	if (storage[fd] && *storage[fd] == '\0')
+	if (storage[fd] == NULL && readres == 0)
 		return (0);
 	return (1);
 }
