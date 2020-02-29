@@ -6,7 +6,7 @@
 /*   By: epines-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:12:39 by epines-s          #+#    #+#             */
-/*   Updated: 2020/02/28 15:43:00 by epines-s         ###   ########.fr       */
+/*   Updated: 2020/02/28 17:19:16 by epines-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,17 @@ static char		*line_to_read(char *storage_fd)
 	int		i;
 
 	i = 0;
+	newline = NULL;
 	while (storage_fd[i] != '\0' && storage_fd[i] != '\n')
 		i++;
-	if (i == 0)
+	if (i == 0 && storage_fd[i] == '\0')
 		return (NULL);
 	newline = ft_strsub(storage_fd, 0, i);
 	newline[i] = '\0';
 	return (newline);
 }
 
-static char		*store_this(char *storage_fd)
+static char		*store_the_rest(char *storage_fd)
 {
 	char	*res;
 	int		i;
@@ -35,9 +36,9 @@ static char		*store_this(char *storage_fd)
 	i = 0;
 	while (storage_fd[i] != '\0' && storage_fd[i] != '\n')
 		i++;
-	if (i == 0)
+	if (i == 0 && storage_fd[i] == '\0')
 		return (NULL);
-	res = ft_strsub(storage_fd, (i + 1), (ft_strlen(storage_fd)));
+	res = ft_strsub(storage_fd, (i + 1), (ft_strlen(storage_fd) + 1));
 	return (res);
 }
 
@@ -57,12 +58,12 @@ int				get_next_line(const int fd, char **line)
 		buf[readres] = '\0';
 		temp = ft_strjoin(storage[fd], buf);
 		free(storage[fd]);
-		storage[fd] = temp;	
+		storage[fd] = temp;
 		if (ft_strchr(storage[fd], '\n'))
 			break ;
 	}
 	*line = line_to_read(storage[fd]);
-	storage[fd] = store_this(storage[fd]);
+	storage[fd] = store_the_rest(storage[fd]);
 	if (storage[fd] == NULL && readres == 0)
 		return (0);
 	return (1);
