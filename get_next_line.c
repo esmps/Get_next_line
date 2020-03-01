@@ -6,7 +6,7 @@
 /*   By: epines-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:12:39 by epines-s          #+#    #+#             */
-/*   Updated: 2020/02/29 16:04:14 by epines-s         ###   ########.fr       */
+/*   Updated: 2020/02/29 17:58:25 by epines-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static char		*store_the_rest(char *storage_fd)
 		i++;
 	if (i == 0 && storage_fd[i] == '\0')
 		return (NULL);
-	res = ft_strsub(storage_fd, (i + 1), (ft_strlen(storage_fd) + 1));
+	res = ft_strsub(storage_fd, (i + 1), \
+			((ft_strlen(storage_fd) + 1) - (i + 1)));
 	free(storage_fd);
 	return (res);
 }
@@ -65,7 +66,7 @@ int				get_next_line(const int fd, char **line)
 	}
 	*line = line_to_read(storage[fd]);
 	storage[fd] = store_the_rest(storage[fd]);
-	if (storage[fd] == NULL && readres == 0)
+	if (*line == NULL && readres == 0 && storage[fd] == NULL)
 		return (0);
 	return (1);
 }
