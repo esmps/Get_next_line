@@ -6,7 +6,7 @@
 /*   By: epines-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:12:39 by epines-s          #+#    #+#             */
-/*   Updated: 2020/02/28 17:19:16 by epines-s         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:04:14 by epines-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ static char		*store_the_rest(char *storage_fd)
 	if (i == 0 && storage_fd[i] == '\0')
 		return (NULL);
 	res = ft_strsub(storage_fd, (i + 1), (ft_strlen(storage_fd) + 1));
+	free(storage_fd);
 	return (res);
 }
 
