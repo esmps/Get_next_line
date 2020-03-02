@@ -6,7 +6,7 @@
 /*   By: epines-s <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:12:39 by epines-s          #+#    #+#             */
-/*   Updated: 2020/02/29 17:58:25 by epines-s         ###   ########.fr       */
+/*   Updated: 2020/03/02 11:27:08 by epines-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,12 @@ static char		*line_to_read(char *storage_fd)
 
 	i = 0;
 	newline = NULL;
+	if (!storage_fd)
+		return (ft_strnew(0));
 	while (storage_fd[i] != '\0' && storage_fd[i] != '\n')
 		i++;
 	if (i == 0 && storage_fd[i] == '\0')
-		return (NULL);
+		return (ft_strnew(0));
 	newline = ft_strsub(storage_fd, 0, i);
 	newline[i] = '\0';
 	return (newline);
@@ -34,6 +36,8 @@ static char		*store_the_rest(char *storage_fd)
 	int		i;
 
 	i = 0;
+	if (!storage_fd)
+		return (NULL);
 	while (storage_fd[i] != '\0' && storage_fd[i] != '\n')
 		i++;
 	if (i == 0 && storage_fd[i] == '\0')
@@ -66,7 +70,7 @@ int				get_next_line(const int fd, char **line)
 	}
 	*line = line_to_read(storage[fd]);
 	storage[fd] = store_the_rest(storage[fd]);
-	if (*line == NULL && readres == 0 && storage[fd] == NULL)
+	if (readres == 0 && storage[fd] == NULL)
 		return (0);
 	return (1);
 }
